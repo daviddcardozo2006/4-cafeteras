@@ -5,7 +5,7 @@ import {
   getPedidoById,
   calcularFacturacionTotal,
   obtenerProductoMasVendido
-} from '../services/pedidoServices';
+} from '../services/pedido.service';
 
 // POST /pedidos -> Devuelve el pedido con su total calculado
 export const postPedido = (req: Request, res: Response) => {
@@ -18,12 +18,12 @@ export const postPedido = (req: Request, res: Response) => {
   });
 };
 
-// GET /pedidos -> Lista de pedidos de todas las mesas
+
 export const getPedidos = (req: Request, res: Response) => {
   res.json(getAllPedidos());
 };
 
-// GET /pedidos/:id -> Pedido de tal mesa
+
 export const getPedido = (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const pedido = getPedidoById(id);
@@ -38,13 +38,13 @@ export const getPedido = (req: Request, res: Response) => {
   });
 };
 
-// GET /reportes/facturacion -> Devuelve cuánto se facturó
+
 export const getFacturacion = (req: Request, res: Response) => {
   const total = calcularFacturacionTotal();
   res.json({ facturacionTotal: total });
 };
 
-// GET /reportes/mas-vendido -> Devuelve el producto más vendido
+
 export const getMasVendido = (req: Request, res: Response) => {
   const masVendido = obtenerProductoMasVendido();
   res.json(masVendido);
