@@ -12,13 +12,13 @@ let idCounter = 1; // inicializamos el counter en 1
 const expresos : Expreso [] = [] ; // creo un array vacio y utilizamos doble bucle for asi pasamos por todas las variedades y tamaños 
 for (const tam of tamaños){
     for (const varz of variedades){
-expresos.push (new Expreso(idCounter++, tam, varz));
+expresos.push (new Expreso(idCounter++, varz,tam));
     }
 }
 const filtrados : Filtrado [] = [] ; // creo un array vacio y utilizamos doble bucle for asi pasamos por todas las variedades y tamaños 
 for (const tam of tamaños){
     for (const varz of variedades){
-filtrados.push (new Filtrado (idCounter++, tam, varz));
+filtrados.push (new Filtrado (idCounter++, varz,tam));
     }
 }
 const pasteleria : Pasteleria [] = [
