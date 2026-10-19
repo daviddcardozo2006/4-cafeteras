@@ -3,10 +3,11 @@ import { obtenerProductos, obtenerProductoPorId } from '../controllers/producto.
 
 const router = Router();
 
+// Montado en /productos (ver app.ts)
 // GET /productos -> Muestra una lista de todos los productos
-router.get('/productos', obtenerProductos);
+router.get('/', obtenerProductos);
 
 // GET /productos/:id -> Devuelve el producto pedido según id
-router.get('/productos/:id', obtenerProductoPorId);
+router.get('/:id', obtenerProductoPorId);
 
 export default router;
