@@ -1,16 +1,16 @@
 import { Pedido } from '../models/pedido';
 import { ItemPedido } from '../models/ItemPedido';
-import { getById as getProductoById } from './producto.service';
+import { getById } from './producto.service';
 
 const pedidos: Pedido[] = [];
 let pedidoIdCounter = 1;
 
-// Crear pedido nuevo (POST /pedidos)
+
 export const crearPedido = (itemsInput: { productoId: number; cantidad: number }[]): Pedido => {
   const items: ItemPedido[] = [];
 
   itemsInput.map(item => {
-    const producto = getProductoById(item.productoId);
+    const producto = getById(item.productoId);
     if (producto) {
       items.push(new ItemPedido(producto, item.cantidad));
     }
@@ -21,7 +21,10 @@ export const crearPedido = (itemsInput: { productoId: number; cantidad: number }
   return nuevoPedido;
 };
 
-export const getAllPedidos = (): Pedido[] => pedidos;
+
+export const getAllPedidos = (): Pedido[] => {
+  return pedidos;
+};
 
 
 export const getPedidoById = (id: number): Pedido | undefined => {
@@ -35,29 +38,33 @@ export const calcularFacturacionTotal = (): number => {
 
 
 export const obtenerCantidadVendidaPorProducto = () => {
-  const conteo: { [nombre: string]: number } = {};
+  let ventas: { nombre: string; cantidad: number }[] = [];
 
   pedidos.map(pedido => {
     pedido.items.map(item => {
-      const nombre = item.producto.nombre;
-      conteo[nombre] = (conteo[nombre] || 0) + item.cantidad;
+      
+      let encontrado = ventas.find(v => v.nombre === item.producto.nombre);
+
+      if (encontrado) {
+        encontrado.cantidad += item.cantidad; 
+      } else {
+        ventas.push({ nombre: item.producto.nombre, cantidad: item.cantidad }); 
+      }
     });
   });
 
-  return conteo;
+  return ventas; 
 };
 
 
 export const obtenerProductoMasVendido = () => {
-  const conteo = obtenerCantidadVendidaPorProducto();
+  let ventas = obtenerCantidadVendidaPorProducto();
 
-  const lista = Object.keys(conteo).map(nombre => ({
-    nombre: nombre,
-    cantidad: conteo[nombre]
-  }));
+  if (ventas.length === 0) return null;
 
-  if (lista.length === 0) return null;
+  
+  let ordenados = [...ventas].sort((a, b) => b.cantidad - a.cantidad);
 
-  const ordenados = [...lista].sort((a, b) => b.cantidad - a.cantidad);
+  
   return ordenados[0];
 };
