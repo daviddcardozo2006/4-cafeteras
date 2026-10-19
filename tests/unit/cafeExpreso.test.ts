@@ -3,17 +3,17 @@ import { Expreso } from '../../src/models/cafeExpreso'
 
 describe('Expreso', () => {
   test.each([
-    ['pocillo', 'brasil', 5020],
-    ['pocillo', 'colombia', 5740],
-    ['pocillo', 'etiopia', 6820],
-    ['mediano', 'brasil', 6280],
-    ['mediano', 'colombia', 7360],
-    ['mediano', 'etiopia', 8980],
-    ['taza grande', 'brasil', 7540],
-    ['taza grande', 'colombia', 8980],
-    ['taza grande', 'etiopia', 11140],
-  ] as const)('%s %s cuesta %i', (tamanio, variedad, esperado) => {
-    const cafe = new Expreso(1, tamanio, variedad);
+    ['POCILLO', 'BRASIL', 5020],
+    ['POCILLO', 'COLOMBIA', 5740],
+    ['POCILLO', 'ETIOPIA', 6820],
+    ['MEDIANO', 'BRASIL', 6280],
+    ['MEDIANO', 'COLOMBIA', 7360],
+    ['MEDIANO', 'ETIOPIA', 8980],
+    ['TAZA GRANDE', 'BRASIL', 7540],
+    ['TAZA GRANDE', 'COLOMBIA', 8980],
+    ['TAZA GRANDE', 'ETIOPIA', 11140],
+  ] as const)('%s %s cuesta %i', (tamaño, variedad, esperado) => {
+    const cafe = new Expreso(1, variedad, tamaño);
     expect(cafe.calcularPrecio()).toBe(esperado);
   });
 });

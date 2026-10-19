@@ -3,17 +3,17 @@ import { Filtrado } from '../../src/models/cafeFiltrado';
 
 describe('Filtrado', () => {
   test.each([
-    ['pocillo', 'brasil', 4040],
-    ['pocillo', 'colombia', 4280],
-    ['pocillo', 'etiopia', 4640],
-    ['mediano', 'brasil', 5300],
-    ['mediano', 'colombia', 5900],
-    ['mediano', 'etiopia', 6800],
-    ['taza grande', 'brasil', 6700],
-    ['taza grande', 'colombia', 7700],
-    ['taza grande', 'etiopia', 9200],
-  ] as const)('%s %s cuesta %i', (tamanio, variedad, esperado) => {
-    const cafe = new Filtrado(1, tamanio, variedad);
+    ['POCILLO', 'BRASIL', 4040],
+    ['POCILLO', 'COLOMBIA', 4280],
+    ['POCILLO', 'ETIOPIA', 4640],
+    ['MEDIANO', 'BRASIL', 5300],
+    ['MEDIANO', 'COLOMBIA', 5900],
+    ['MEDIANO', 'ETIOPIA', 6800],
+    ['TAZA GRANDE', 'BRASIL', 6700],
+    ['TAZA GRANDE', 'COLOMBIA', 7700],
+    ['TAZA GRANDE', 'ETIOPIA', 9200],
+  ] as const)('%s %s cuesta %i', (tamaño, variedad, esperado) => {
+    const cafe = new Filtrado(1, variedad, tamaño);
     expect(cafe.calcularPrecio()).toBe(esperado);
   });
 });
