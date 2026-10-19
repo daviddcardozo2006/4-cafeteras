@@ -2,69 +2,45 @@ import { Pedido } from '../models/pedido';
 import { ItemPedido } from '../models/ItemPedido';
 import { getById } from './producto.service';
 
-const pedidos: Pedido[] = [];
-let pedidoIdCounter = 1;
+// Lo que llega en el body del POST /pedidos
+export interface ItemPedidoInput {
+  productoId: number;
+  cantidad: number;
+}
 
+let pedidos: Pedido[] = [];
+let siguienteId = 1;
 
-export const crearPedido = (itemsInput: { productoId: number; cantidad: number }[]): Pedido => {
-  const items: ItemPedido[] = [];
+export const crearPedido = (items: ItemPedidoInput[]): Pedido => {
+  if (!Array.isArray(items) || items.length === 0) {
+    throw new Error('El pedido debe tener al menos un item.');
+  }
 
-  itemsInput.map(item => {
-    const producto = getById(item.productoId);
-    if (producto) {
-      items.push(new ItemPedido(producto, item.cantidad));
+  // Primero validamos y armamos todos los items; si alguno falla,
+  // se lanza el error antes de guardar nada.
+  const itemsPedido = items.map(({ productoId, cantidad }) => {
+    const producto = getById(productoId);
+    if (!producto) {
+      throw new Error(`El producto ${productoId} no existe.`);
     }
+    if (!Number.isInteger(cantidad) || cantidad <= 0) {
+      throw new Error(`Cantidad inválida para el producto ${productoId}.`);
+    }
+    return new ItemPedido(producto, cantidad);
   });
 
-  const nuevoPedido = new Pedido(pedidoIdCounter++, items, 'pendiente');
-  pedidos.push(nuevoPedido);
-  return nuevoPedido;
+  const pedido = new Pedido(siguienteId++, itemsPedido);
+  pedidos.push(pedido);
+  return pedido;
 };
 
+export const getAllPedidos = (): Pedido[] => pedidos;
 
-export const getAllPedidos = (): Pedido[] => {
-  return pedidos;
-};
+export const getPedidoById = (id: number): Pedido | undefined =>
+  pedidos.find((p) => p.id === id);
 
-
-export const getPedidoById = (id: number): Pedido | undefined => {
-  return pedidos.find(p => p.id === id);
-};
-
-
-export const calcularFacturacionTotal = (): number => {
-  return pedidos.reduce((acumulador, actual) => acumulador + actual.calcularTotal(), 0);
-};
-
-
-export const obtenerCantidadVendidaPorProducto = () => {
-  let ventas: { nombre: string; cantidad: number }[] = [];
-
-  pedidos.map(pedido => {
-    pedido.items.map(item => {
-      
-      let encontrado = ventas.find(v => v.nombre === item.producto.nombre);
-
-      if (encontrado) {
-        encontrado.cantidad += item.cantidad; 
-      } else {
-        ventas.push({ nombre: item.producto.nombre, cantidad: item.cantidad }); 
-      }
-    });
-  });
-
-  return ventas; 
-};
-
-
-export const obtenerProductoMasVendido = () => {
-  let ventas = obtenerCantidadVendidaPorProducto();
-
-  if (ventas.length === 0) return null;
-
-  
-  let ordenados = [...ventas].sort((a, b) => b.cantidad - a.cantidad);
-
-  
-  return ordenados[0];
+// Solo para tests: deja el "almacenamiento" vacío entre caso y caso.
+export const resetPedidos = (): void => {
+  pedidos = [];
+  siguienteId = 1;
 };
