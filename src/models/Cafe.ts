@@ -1,28 +1,23 @@
 import { Producto } from './Producto';
 import { tamaño, variedad } from './types';
 
+const PRECIO_GRAMO_MAPA = {
+  'BRASIL': 140,
+  'COLOMBIA': 180,
+  'ETIOPIA': 240
+};
+
 export abstract class Cafe extends Producto {
+  public precioxGramo: number;
+
   constructor(
     id: number,
     nombre: string,
+    public variedad: variedad,
     precioBase: number,
-    public tamanio: tamaño,
-    public variedad: variedad 
+    public tamaño: tamaño
   ) {
-    super(id, nombre, precioBase);
-  }
-
-  protected obtenerPrecioGramo(): number {
-    switch (this.variedad) {
-      case 'brasil':
-        return 140;
-      case 'colombia':
-        return 180;
-      case 'etiopia':
-        return 240;
-      default:
-        throw new Error(('Variedad no válida.'));
-        ;
-    }
+    super(id, nombre, variedad, precioBase);
+    this.precioxGramo = PRECIO_GRAMO_MAPA[variedad];
   }
 }

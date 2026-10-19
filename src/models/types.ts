@@ -1,2 +1,2 @@
-export type variedad = 'colombia' | 'etiopia' | 'brasil';
-export type tamaño = 'pocillo' | 'mediano' | 'taza grande';
+export type tamaño = 'POCILLO' | 'MEDIANO' | 'TAZA GRANDE';
+export type variedad = 'BRASIL' | 'COLOMBIA' | 'ETIOPIA';

@@ -1,26 +1,24 @@
 import { Cafe } from './Cafe';
 import { tamaño, variedad } from './types';
 
-export class Filtrado extends Cafe {
+const TAMAÑO_MAPA = {
+  'POCILLO': 18,
+  'MEDIANO': 27,
+  'TAZA GRANDE': 36
+};
+
+export class Expreso extends Cafe {
   constructor(
     id: number,
-    tamanio: tamaño,
     variedad: variedad,
+    tamaño: tamaño,
     precioBase: number = 2500
   ) {
-    super(id, 'Filtrado', precioBase, tamanio, variedad);
-  }
-
-  private obtenerGramos(): number {
-    switch (this.tamanio) {
-      case 'pocillo': return 18;
-      case 'mediano': return 27;
-      case 'taza grande': return 36;
-      default: throw new Error('Tamaño no válido.');
-    }
+    super(id, 'Expreso', variedad, precioBase, tamaño);
   }
 
   calcularPrecio(): number {
-    return this.precioBase + (this.obtenerGramos() * this.obtenerPrecioGramo());
+    const gramos = TAMAÑO_MAPA[this.tamaño];
+    return this.precioBase + (gramos * this.precioxGramo);
   }
 }
