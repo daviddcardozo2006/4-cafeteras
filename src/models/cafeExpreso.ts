@@ -1,7 +1,7 @@
 import { Cafe } from './Cafe';
 import { tamaño, variedad } from './types';
 
-export class Filtrado extends Cafe {
+export class Expreso extends Cafe {
   constructor(
     id: number,
     tamanio: tamaño,
